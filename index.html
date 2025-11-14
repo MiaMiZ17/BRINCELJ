@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$Brincelj - Balkan Dwarf Ops Target</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inconsolata:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #00ff41;
+            font-family: 'Inconsolata', monospace;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Full-screen background video */
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: grayscale(30%) contrast(1.2) brightness(0.8);
+        }
+        
+        /* Edgy overlay: Dark tint + scanlines + vignette */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Scanlines effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 65, 0.03) 2px,
+                rgba(0, 255, 65, 0.03) 4px
+            );
+            z-index: -1;
+            pointer-events: none;
+            animation: scan 20s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100px); }
+        }
+        
+        /* Vignette */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 0 0 200px 100px rgba(0, 0, 0, 0.5);
+            border-radius: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Main content container */
+        .container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        /* Target Profile Section - Drone Targeting */
+        .target-profile {
+            position: relative;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+        
+        .target-video {
+            width: 100%;
+            height: 400px;
+            border: 2px solid #ff00ff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #ff00ff;
+            position: relative;
+        }
+        
+        /* Drone-style crosshair reticle */
+        .drone-reticle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .drone-reticle::before {
+            content: '';
+            position: absolute;
+            border: 2px solid #00ff41;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            opacity: 0.6;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .drone-reticle::after {
+            content: 'TARGET LOCK';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ff41;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8rem;
+            font-weight: 900;
+            text-shadow: 0 0 5px #00ff41;
+            animation: glitch 1s linear infinite;
+        }
+        
+        /* Crosshair lines for drone feel */
+        .crosshair-line {
+            position: absolute;
+            background: #00ff41;
+            opacity: 0.7;
+        }
+        
+        .crosshair-line.horizontal {
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            transform: translateY(-50%);
+        }
+        
+        .crosshair-line.vertical {
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            transform: translateX(-50%);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        /* Glitchy header */
+        h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            text-shadow: 
+                0 0 10px #00ff41,
+                0 0 20px #00ff41,
+                0 0 30px #ff00ff;
+            animation: glitch 1s linear infinite, glow 2s ease-in-out infinite alternate;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41, 0 0 30px #ff00ff; }
+            to { text-shadow: 0 0 20px #00ff41, 0 0 30px #00ff41, 0 0 40px #ff00ff; }
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+        
+        /* Ops Info Dossier */
+        .ops-dossier {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 2rem;
+            max-width: 800px;
+            text-align: left;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+            margin-bottom: 2rem;
+        }
+        
+        .ops-dossier h2 {
+            color: #ff00ff;
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .dossier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .dossier-item {
+            background: rgba(255, 0, 255, 0.1);
+            padding: 1rem;
+            border-left: 3px solid #00ff41;
+        }
+        
+        .dossier-item strong {
+            color: #00ff41;
+        }
+        
+        /* Classic Vine Section */
+        .classic-vine {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 2rem;
+            max-width: 800px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+            margin-bottom: 2rem;
+        }
+        
+        .classic-vine h3 {
+            color: #00ff41;
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 1rem;
+        }
+        
+        .vine-link {
+            color: #ff00ff;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        
+        .vine-link:hover {
+            text-shadow: 0 0 10px #ff00ff;
+        }
+        
+        /* Neon button */
+        .cta {
+            background: none;
+            border: 2px solid #00ff41;
+            color: #00ff41;
+            padding: 1rem 2rem;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 2rem;
+            text-decoration: none;
+        }
+        
+        .cta:hover {
+            background: #00ff41;
+            color: #000;
+            box-shadow: 0 0 20px #00ff41;
+        }
+        
+        /* CRT flicker */
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+            20%, 24%, 55% { opacity: 0.3; }
+        }
+        
+        .flicker { animation: flicker 0.15s infinite; }
+    </style>
+</head>
+<body>
+    <video id="bg-video" autoplay loop muted playsinline>
+        <source src="https://video.twimg.com/amplify_video/1989029225601335296/vid/avc1/320x568/SqXHH6PdbjcwOHC7.mp4" type="video/mp4">
+        <!-- THINK BIGGER loop for ops intensity -->
+    </video>
+    
+    <div class="overlay"></div>
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+    
+    <div class="container">
+        <h1 class="flicker">TARGET ACQUIRED: $BRINCELJ</h1>
+        <p class="subtitle">Balkan Dwarf Profile Locked | Timid Herbalist Gnome from Kekec's Tricks | Ops Directive: Deploy Meme Payload to Solana Cliffs | Risk: Bedanec Interference | Reward: Humility Pump to Moon</p>
+        
+        <div class="target-profile">
+            <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/IwLSrNu1ppI?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <div class="drone-reticle">
+                <div class="crosshair-line horizontal"></div>
+                <div class="crosshair-line vertical"></div>
+            </div>
+        </div>
+        
+        <div class="ops-dossier">
+            <h2 class="flicker">OPERATIONAL DOSSIER</h2>
+            <div class="dossier-grid">
+                <div class="dossier-item">
+                    <strong>ALIAS:</strong><br>Brincelj / Kosobrin / Little Gnome Guy
+                </div>
+                <div class="dossier-item">
+                    <strong>ORIGIN:</strong><br>1968 Slovenian Film - Kekec's Tricks (Kekčeve ukane)
+                </div>
+                <div class="dossier-item">
+                    <strong>TRAITS:</strong><br>Cowardly Herbalist | White-Bearded Dwarf | Secret Cliff Hut Dweller | Bedanec's Punching Bag
+                </div>
+                <div class="dossier-item">
+                    <strong>TOKEN SPECS:</strong><br>$BRINCELJ on Pump.fun | Supply: 1B | Tax: 0% | Liquidity: Locked | Community: Underdog Uprising
+                </div>
+                <div class="dossier-item">
+                    <strong>MISSION:</strong><br>Infiltrate Meme Markets | Brew Viral Potions | Rescue from Bear Squeezes | Foil to Kekec's Hero Arc
+                </div>
+                <div class="dossier-item">
+                    <strong>THREATS:</strong><br>Villain Poacher Bedanec | Self-Doubt Loops | Poverty Vibes | Waist-Crushing Endings
+                </div>
+            </div>
+        </div>
+        
+        <div class="classic-vine">
+            <h3 class="flicker">CLASSIC MEME ARCHIVE: TUDI BRINCELJ SE JE PREDAL</h3>
+            <p>Even the timid dwarf waves the white flag in this 2017 Vine classic by Papster – a hilarious nod to Brincelj's ultimate surrender vibes. (Vine RIP; relic from Slovenian meme golden age.)</p>
+            <a href="https://www.facebook.com/slovines/videos/tudi-brincelj-se-je-predal-vine-by-papsterhttpsvinecov5yw0lt70gml/1203723149705158/" class="vine-link" target="_blank">Relive the Surrender on FB Archive</a>
+        </div>
+        
+        <a href="https://pump.fun/[your-token-address]" class="cta" target="_blank">Initiate Ops – Acquire Target</a>
+    </div>
+
+    <script>
+        // Edgy particle swarm for ops scan
+        const canvas = document.createElement('canvas');
+        canvas.style.position = 'fixed';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.pointerEvents = 'none';
+        canvas.style.zIndex = '0';
+        document.body.appendChild(canvas);
+        
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        let particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 2,
+                vy: (Math.random() - 0.5) * 2,
+                life: Math.random() * 255
+            });
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.globalAlpha = 0.1;
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = `hsl(${Date.now() * 0.1 % 360}, 100%, 50%)`;
+                ctx.fill();
+                
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                p.life -= 1;
+                if (p.life < 0) {
+                    p.x = Math.random() * canvas.width;
+                    p.y = Math.random() * canvas.height;
+                    p.life = 255;
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Auto-play background video
+        document.getElementById('bg-video').play();
+    </script>
+</body>
+</html>
