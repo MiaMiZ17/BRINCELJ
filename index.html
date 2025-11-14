@@ -4,8 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>$Brincelj - Balkan Dwarf Ops Target</title>
+    <meta name="description" content="Brincelj: The cowardly herbalist gnome from Kekec's Tricks. Deploy meme payload to Solana cliffs. 1B supply, 0% tax. Foil Bedanec's bear squeezes.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧙‍♂️</text></svg>">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inconsolata:wght@400;700&display=swap');
+        
+        /* Balkan Dwarf Font Embed */
+        @font-face {
+            font-family: 'Balkan';
+            src: url('fonts/BalkanNormal.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
         
         * {
             margin: 0;
@@ -16,7 +26,7 @@
         body {
             background: #000;
             color: #00ff41;
-            font-family: 'Inconsolata', monospace;
+            font-family: 'Balkan', 'Inconsolata', monospace;
             overflow-x: hidden;
             position: relative;
         }
@@ -45,7 +55,7 @@
             pointer-events: none;
         }
         
-        /* Scanlines effect */
+        /* Enhanced Scanlines with motion */
         .scanlines {
             position: fixed;
             top: 0;
@@ -61,7 +71,7 @@
             );
             z-index: -1;
             pointer-events: none;
-            animation: scan 20s linear infinite;
+            animation: scan 15s linear infinite, flicker-scan 0.1s infinite;
         }
         
         @keyframes scan {
@@ -69,7 +79,12 @@
             100% { transform: translateY(100px); }
         }
         
-        /* Vignette */
+        @keyframes flicker-scan {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.8; }
+        }
+        
+        /* Vignette with subtle pulse */
         .vignette {
             position: fixed;
             top: 0;
@@ -80,9 +95,15 @@
             border-radius: 0;
             z-index: -1;
             pointer-events: none;
+            animation: vignette-pulse 3s ease-in-out infinite alternate;
         }
         
-        /* Main content container */
+        @keyframes vignette-pulse {
+            from { box-shadow: inset 0 0 200px 100px rgba(0, 0, 0, 0.5); }
+            to { box-shadow: inset 0 0 200px 100px rgba(0, 0, 0, 0.6); }
+        }
+        
+        /* Main content container with parallax scroll */
         .container {
             position: relative;
             z-index: 1;
@@ -95,11 +116,16 @@
             padding: 2rem;
         }
         
-        /* Target Profile Section - Drone Targeting */
+        /* Target Profile Section - Drone Targeting with hover motion */
         .target-profile {
             position: relative;
             max-width: 600px;
             margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .target-profile:hover {
+            transform: scale(1.02) rotate(1deg);
         }
         
         .target-video {
@@ -109,9 +135,15 @@
             border-radius: 10px;
             box-shadow: 0 0 20px #ff00ff;
             position: relative;
+            animation: border-glow 2s ease-in-out infinite alternate;
         }
         
-        /* Drone-style crosshair reticle */
+        @keyframes border-glow {
+            from { box-shadow: 0 0 20px #ff00ff; }
+            to { box-shadow: 0 0 30px #ff00ff, 0 0 40px #ff00ff; }
+        }
+        
+        /* Enhanced Drone-style crosshair reticle with rotation */
         .drone-reticle {
             position: absolute;
             top: 50%;
@@ -121,6 +153,12 @@
             height: 150px;
             pointer-events: none;
             z-index: 2;
+            animation: reticle-spin 10s linear infinite;
+        }
+        
+        @keyframes reticle-spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
         
         .drone-reticle::before {
@@ -134,7 +172,7 @@
             width: 120px;
             height: 120px;
             opacity: 0.6;
-            animation: pulse 2s ease-in-out infinite;
+            animation: pulse 1.5s ease-in-out infinite;
         }
         
         .drone-reticle::after {
@@ -148,7 +186,7 @@
             font-size: 0.8rem;
             font-weight: 900;
             text-shadow: 0 0 5px #00ff41;
-            animation: glitch 1s linear infinite;
+            animation: glitch 0.8s linear infinite;
         }
         
         /* Crosshair lines for drone feel */
@@ -179,9 +217,9 @@
             50% { opacity: 1; }
         }
         
-        /* Glitchy header */
+        /* Enhanced Glitchy header with more motion */
         h1 {
-            font-family: 'Orbitron', monospace;
+            font-family: 'Balkan', 'Orbitron', monospace;
             font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 900;
             text-transform: uppercase;
@@ -190,7 +228,7 @@
                 0 0 10px #00ff41,
                 0 0 20px #00ff41,
                 0 0 30px #ff00ff;
-            animation: glitch 1s linear infinite, glow 2s ease-in-out infinite alternate;
+            animation: glitch 0.5s linear infinite, glow 1.5s ease-in-out infinite alternate, float 3s ease-in-out infinite;
             margin-bottom: 1rem;
         }
         
@@ -207,15 +245,26 @@
             to { text-shadow: 0 0 20px #00ff41, 0 0 30px #00ff41, 0 0 40px #ff00ff; }
         }
         
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
         .subtitle {
             font-size: 1.2rem;
             opacity: 0.8;
             margin-bottom: 2rem;
             max-width: 600px;
             line-height: 1.5;
+            animation: fade-in 2s ease-out;
         }
         
-        /* Ops Info Dossier */
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 0.8; transform: translateY(0); }
+        }
+        
+        /* Ops Info Dossier with hover lift */
         .ops-dossier {
             background: rgba(0, 0, 0, 0.6);
             border: 1px solid #00ff41;
@@ -225,6 +274,12 @@
             text-align: left;
             box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
             margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .ops-dossier:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.4);
         }
         
         .ops-dossier h2 {
@@ -232,6 +287,7 @@
             font-family: 'Orbitron', monospace;
             margin-bottom: 1rem;
             text-align: center;
+            animation: flicker 0.2s infinite;
         }
         
         .dossier-grid {
@@ -245,41 +301,82 @@
             background: rgba(255, 0, 255, 0.1);
             padding: 1rem;
             border-left: 3px solid #00ff41;
+            transition: background 0.3s ease;
+        }
+        
+        .dossier-item:hover {
+            background: rgba(255, 0, 255, 0.2);
         }
         
         .dossier-item strong {
             color: #00ff41;
         }
         
-        /* Classic Vine Section */
-        .classic-vine {
+        /* Recon File Section with scroll reveal */
+        #recon-file {
             background: rgba(0, 0, 0, 0.6);
             border: 1px solid #ff00ff;
             border-radius: 5px;
             padding: 2rem;
             max-width: 800px;
-            text-align: center;
+            text-align: left;
             box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
             margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
         
-        .classic-vine h3 {
+        #recon-file.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #recon-file h2 {
             color: #00ff41;
             font-family: 'Orbitron', monospace;
             margin-bottom: 1rem;
+            text-align: center;
         }
         
-        .vine-link {
+        #recon-file table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: 'Balkan', 'Inconsolata', monospace;
+            font-size: 0.9em;
+        }
+        
+        #recon-file th,
+        #recon-file td {
+            padding: 8px;
+            border: 1px solid #00ff41;
+            text-align: left;
+            transition: background 0.2s ease;
+        }
+        
+        #recon-file th {
+            background: rgba(0, 255, 65, 0.2);
+        }
+        
+        #recon-file tr:hover {
+            background: rgba(255, 0, 255, 0.1);
+        }
+        
+        #recon-file tr:nth-child(even) {
+            background: rgba(255, 0, 255, 0.05);
+        }
+        
+        #recon-file a {
             color: #ff00ff;
             text-decoration: none;
-            font-size: 1.1rem;
         }
         
-        .vine-link:hover {
-            text-shadow: 0 0 10px #ff00ff;
+        #recon-file a:hover {
+            text-shadow: 0 0 5px #ff00ff;
         }
         
-        /* Neon button */
+        /* Neon button with enhanced hover */
         .cta {
             background: none;
             border: 2px solid #00ff41;
@@ -289,15 +386,33 @@
             font-size: 1rem;
             text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             margin-top: 2rem;
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cta:hover::before {
+            left: 100%;
         }
         
         .cta:hover {
             background: #00ff41;
             color: #000;
             box-shadow: 0 0 20px #00ff41;
+            transform: scale(1.05);
         }
         
         /* CRT flicker */
@@ -307,6 +422,13 @@
         }
         
         .flicker { animation: flicker 0.15s infinite; }
+        
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            .dossier-grid { grid-template-columns: 1fr; }
+            #recon-file table { font-size: 0.8em; }
+        }
     </style>
 </head>
 <body>
@@ -320,8 +442,8 @@
     <div class="vignette"></div>
     
     <div class="container">
-        <h1 class="flicker">TARGET ACQUIRED: $BRINCELJ</h1>
-        <p class="subtitle">Balkan Dwarf Profile Locked | Timid Herbalist Gnome from Kekec's Tricks | Ops Directive: Deploy Meme Payload to Solana Cliffs | Risk: Bedanec Interference | Reward: Humility Pump to Moon</p>
+        <h1 class="flicker">†HÊ BÂLKÂN DWÂRF</h1>
+        <p class="subtitle">TARGET ACQUIRED: $BRINCELJ | Balkan Dwarf Profile Locked | Timid Herbalist Gnome from Kekec's Tricks | Ops Directive: Deploy Meme Payload to Solana Cliffs | Risk: Bedanec Interference | Reward: Humility Pump to Moon</p>
         
         <div class="target-profile">
             <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/IwLSrNu1ppI?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -355,12 +477,92 @@
             </div>
         </div>
         
+        <!-- Recon File Section -->
+        <section id="recon-file">
+            <h2 class="flicker">RECON FILE: BRINCELJ INTEL SCAN</h2>
+            <p style="text-align: center; font-style: italic; color: #00ff41;">Google Deep Dive | Nov 14, 2025 | Underdog Signals Detected | Folklore Pumps Incoming</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Title & Snippet</th>
+                        <th>Link</th>
+                        <th>Relevance to Ops</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Kekec' Tricks: could anyone please tell me who/what this creature is?<br>Reddit thread explaining Brincelj as a "small, kind-hearted and very cowardly little man" teased by Bedanec—pure underdog vibes.</td>
+                        <td><a href="https://www.reddit.com/r/Slovenia/comments/nvpt5e/kekec_tricks_could_anyone_please_tell_me_whowhat/" target="_blank">Reddit</a></td>
+                        <td>High—core lore for your token's "punching bag to moon pump" narrative.</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Kekec's Tricks - Wikipedia<br>Overview of the 1968 Yugoslav-Slovene adventure film directed by Jože Gale, based on mountain boy tales.</td>
+                        <td><a href="https://en.wikipedia.org/wiki/Kekec%27s_Tricks" target="_blank">Wikipedia</a></td>
+                        <td>Foundational—use this for site backlinks or embeds to boost authenticity.</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Brincljeva luknjica - YouTube<br>Clip from the film showing Brincelj's "little hole" hut scene (Polish dub?).</td>
+                        <td><a href="https://www.youtube.com/watch?v=Wwpp7O1w1j4" target="_blank">YouTube</a></td>
+                        <td>Visual inspo—embed similar clips for your dossier page to hook viewers.</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Brincelj (@brinceljcocktailvan) • Instagram<br>A repurposed Slovenian firetruck turned mobile cocktail bar—event bookings at Beach Bar Tochka.</td>
+                        <td><a href="https://www.instagram.com/brinceljcocktailvan/" target="_blank">Instagram</a></td>
+                        <td>Fun modern twist—could collab for IRL token events? (Low crypto tie-in.)</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Kekčeve ukane 1968 - YouTube<br>Full film upload (or excerpt) with Brincelj antics.</td>
+                        <td><a href="https://www.youtube.com/watch?v=kld-ScveS50" target="_blank">YouTube</a></td>
+                        <td>Media gold—fair use snippets could amp your site's "gnome revolt" theme.</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Brincelj Cocktail Van - Facebook<br>Page for the traveling bar (761 likes), ex-firetruck from 1973.</td>
+                        <td><a href="https://m.facebook.com/brinceljcocktailvan/about/" target="_blank">Facebook</a></td>
+                        <td>Branding overlap—tag them on X for cross-promo potential.</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Kekec's Tricks (1968) - IMDb<br>Children's adventure about witty boy Kekec and friends in Slovenian mountains.</td>
+                        <td><a href="https://www.imdb.com/title/tt0063177/" target="_blank">IMDb</a></td>
+                        <td>Film DB—add to your "Origin" section for credibility.</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Brincelj Cocktail Van - Tochka Zone<br>Profile on the bar's history and cocktail menu.</td>
+                        <td><a href="https://www.tochka.zone/brincelj-cocktail-van" target="_blank">Tochka Zone</a></td>
+                        <td>Niche local—leverage Slovenian meme communities.</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Brincelj Kekec (@brinceljeth) / Posts / X<br>X account for a "Dwarf living in Slovenia" (1 post, woods-themed).</td>
+                        <td><a href="https://x.com/brinceljeth?lang=en" target="_blank">X</a></td>
+                        <td>Social echo—follow/DM for collabs; low activity but on-brand.</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Made a cursed outfit today... attempt at Brincelj from "Kekec's Tricks"<br>Reddit RDR2 cosplay post—cursed cowboy-gnome hybrid.</td>
+                        <td><a href="https://www.reddit.com/r/reddeadfashion/comments/fdec1m/made_a_cursed_outfit_today_here_is_my_attempt_at/" target="_blank">Reddit</a></td>
+                        <td>Meme potential—cosplay trends could viral your token art.</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p style="text-align: center; font-size: 0.8em; color: #666; margin-top: 20px;">Scan Complete | No Token Hits Yet—Initiate Viral Brew | Update: Manual Refresh Recommended</p>
+        </section>
         
         <a href="https://pump.fun/GcMnuJNZH21CYuQTR3NzRSdwktWrE7Qsu2tkXTCNpump" class="cta" target="_blank">Initiate Ops – Acquire Target</a>
     </div>
 
     <script>
-        // Edgy particle swarm for ops scan
+        // Enhanced particle swarm with more motion and color shifts
         const canvas = document.createElement('canvas');
         canvas.style.position = 'fixed';
         canvas.style.top = '0';
@@ -374,23 +576,25 @@
         canvas.height = window.innerHeight;
         
         let particles = [];
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 100; i++) { // Increased for more dynamic motion
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 2,
-                vy: (Math.random() - 0.5) * 2,
-                life: Math.random() * 255
+                vx: (Math.random() - 0.5) * 3, // Faster variance
+                vy: (Math.random() - 0.5) * 3,
+                life: Math.random() * 255,
+                size: Math.random() * 4 + 1, // Larger particles
+                hue: Math.random() * 360 // Individual color cycling
             });
         }
         
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.globalAlpha = 0.1;
+            ctx.globalAlpha = 0.08; // Slightly more trail
             particles.forEach(p => {
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-                ctx.fillStyle = `hsl(${Date.now() * 0.1 % 360}, 100%, 50%)`;
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `hsl(${p.hue + Date.now() * 0.01 % 360}, 100%, 50%)`; // Per-particle hue shift
                 ctx.fill();
                 
                 p.x += p.vx;
@@ -402,6 +606,8 @@
                     p.x = Math.random() * canvas.width;
                     p.y = Math.random() * canvas.height;
                     p.life = 255;
+                    p.size = Math.random() * 4 + 1;
+                    p.hue = Math.random() * 360;
                 }
             });
             requestAnimationFrame(animate);
@@ -413,9 +619,24 @@
             canvas.height = window.innerHeight;
         });
         
+        // Scroll-triggered reveal for sections
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        observer.observe(document.getElementById('recon-file'));
+        
         // Auto-play background video
         document.getElementById('bg-video').play();
     </script>
 </body>
 </html>
-
